@@ -23,11 +23,52 @@
 Подсказка: Возможно, вам понадобится округление чисел и оператор %.
 */
 
-const myNumber = toString(parseInt(inputCycle("Введите число")));
-const myOut = myNumber;
-console.log(myOut);
+const numArray = ['единиц', 'десятков', 'сотен', 'тысяч', 'миллионов', 'миллиардов', ];
+0 123 456 789
+пиздец
+бизнес
+let myStringArray = [];
+
+let shiftArray = (numArray.length - 3);
+console.log(shiftArray);
+
+// Число знаков, которые могут быть именованы
+const maxSigns = (numArray.length - 3)*3 +3;
+
+// let myVar = 1;
+
+// let myIndex = 0;
+
+
+
+const myNumber = parseInt(inputCycle("Введите число"));
+
+// Количество знаков в число
+const signsOfMyNumber = parseInt(Math.log10(myNumber))+1;
+
+// У кого толще
+const currentMax = Math.max(maxSigns, signsOfMyNumber);
+
+// Копия числа, чтобы резать последний знак
+let shiftNumber = myNumber;
+
+for (let index = 0; index < currentMax; index++) {
+    if (index < 3) {
+        myStringArray[index] = shiftNumber % 10
+    }
+    
+}
+
+
+console.log(signsOfMyNumber);
+console.log(myNumber);
+console.log(myNumber[0]);
 console.log(
-    `В числе ${myNumber} количество сотен: 5, десятков: 3, единиц: ${
+    `В числе ${myNumber} количество сотен: ${
+        myNumber[myNumber.length - 3]
+    }, десятков: ${
+        myNumber[myNumber.length - 2]
+    }, единиц: ${
         myNumber[myNumber.length - 1]
     }`
 );
