@@ -23,55 +23,88 @@
 Подсказка: Возможно, вам понадобится округление чисел и оператор %.
 */
 
-const numArray = ['единиц', 'десятков', 'сотен', 'тысяч', 'миллионов', 'миллиардов', ];
-0 123 456 789
-пиздец
-бизнес
+// Массив списка назвавний чисел (трипплетов)
+const numArray = [
+    "единиц",
+    // "десятков",
+    // "сотен",
+    // "тысяч",
+    // "миллионов",
+    // "миллиардов",
+    // "триллионов",
+];
+
+const FIRSTSIGNS = 3;
+
+let firstArrayLenght =
+    numArray.length >= FIRSTSIGNS ? FIRSTSIGNS : numArray.length;
+
+const firstSignsArray = numArray.slice(0, firstArrayLenght);
+
+const namedBigSigns = numArray.slice(firstArrayLenght, numArray.length);
+
 let myStringArray = [];
 
-let shiftArray = (numArray.length - 3);
-console.log(shiftArray);
+// Число знаков, которые могут быть именованы из массива numArray
+const maxSigns = namedBigSigns.length * 3 + firstSignsArray.length;
 
-// Число знаков, которые могут быть именованы
-const maxSigns = (numArray.length - 3)*3 +3;
-
-// let myVar = 1;
-
-// let myIndex = 0;
-
-
+const splitter = ": ";
 
 const myNumber = parseInt(inputCycle("Введите число"));
 
-// Количество знаков в число
-const signsOfMyNumber = parseInt(Math.log10(myNumber))+1;
+// Следующая строка — для проверки больших чисел
+// const myNumber = 1_234_567_890_123;
+
+// Количество знаков в числе
+const signsOfMyNumber = parseInt(Math.log10(myNumber)) + 1;
 
 // У кого толще
-const currentMax = Math.max(maxSigns, signsOfMyNumber);
+const currentMax = Math.min(maxSigns, signsOfMyNumber);
 
 // Копия числа, чтобы резать последний знак
 let shiftNumber = myNumber;
 
+// Его же копия — в строку
+let stringShiftNumber = String(shiftNumber);
+
+let counter = 0;
+let flag = 0;
+
 for (let index = 0; index < currentMax; index++) {
-    if (index < 3) {
-        myStringArray[index] = shiftNumber % 10
+    console.log(myNumber);
+    if (myNumber <= 0) {
+        console.log("Число меньше или равно 0");
+        flag = 1;
+        break;
     }
-    
+    if (index < 3) {
+        myStringArray[index] =
+            numArray[index] +
+            splitter +
+            stringShiftNumber[stringShiftNumber.length - index - 1];
+    }
+    if (index >= 3) {
+        const myTripplet = index % FIRSTSIGNS;
+        let smallSign = firstSignsArray[myTripplet] + " ";
+        if (myTripplet === 0) {
+            smallSign = "";
+            counter++;
+        }
+
+        myStringArray[index] =
+            smallSign +
+            namedBigSigns[counter - 1] +
+            splitter +
+            stringShiftNumber[stringShiftNumber.length - index - 1];
+    }
 }
 
-
-console.log(signsOfMyNumber);
-console.log(myNumber);
-console.log(myNumber[0]);
-console.log(
-    `В числе ${myNumber} количество сотен: ${
-        myNumber[myNumber.length - 3]
-    }, десятков: ${
-        myNumber[myNumber.length - 2]
-    }, единиц: ${
-        myNumber[myNumber.length - 1]
-    }`
-);
+// Вывод программы
+if (!flag) {
+    console.log(
+        `В числе ${myNumber} количество ${myStringArray.reverse().join(", ")}`
+    );
+}
 
 function inputNumber(text) {
     return prompt(text, "").replace(",", ".");
